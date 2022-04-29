@@ -4,7 +4,7 @@ public class Program
 {
 	public static void Main()
 	{
-		Console.WriteLine(validaCPF("36694661851"));
+		Console.WriteLine(validaCPF("4545454545"));
 		
 	}
     public static int validaCPF(string cpf)
