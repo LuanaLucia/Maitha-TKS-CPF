@@ -4,49 +4,65 @@ public class Program
 {
     public static void Main()
     {
-        Console.WriteLine(validaCPF("54545"));
+        Console.WriteLine(validaCPF("36698765484"));
     }
 
-    public static int validaCPF(string cpf)
+    public static string validaCPF(string CPF)
     {
-        string CPFtratado = "";
-        int digito1 = 0;
-        int digito2 = 0;
+        string CPFtratado = trataCPF(CPF);
 
+        if (CPFtratado.Length != 11)
+        {
+            return "CPF inválido";
+        }
+
+        int digito1 = calculaDigito(11, CPFtratado);
+        int digito2 = calculaDigito(12, CPFtratado);
+
+        //return Convert.ToInt64(digito1).ToString("D1");
+
+        if (Convert.ToInt64(digito1).ToString("D1") == CPFtratado.Substring(9, 1) || Convert.ToInt64(digito2).ToString("D1") == CPFtratado.Substring(10, 1))
+        {
+            return "CPF Válido";
+        }
+        else
+        {
+            return "CPF inválido";
+        }
+
+
+    }
+
+    public static int calculaDigito(int n, string CPFaux)
+    {
+        int digitoAux = 0;
+
+        for (int i = 1; i < CPFaux.Length - 1; i++)
+        {
+            digitoAux += (n - i) * Int32.Parse(CPFaux.Substring(i, 1));
+
+        }
+
+        digitoAux = digitoAux % 11;
+        digitoAux = digitoAux < 2 ? 0 : 11 - digitoAux;
+        return digitoAux;
+
+    }
+
+    public static string trataCPF(string cpf)
+    {
+        string CPFaux = "";
 
         for (int i = 0; i < cpf.Length; i++)
         {
             int n;
             if (Int32.TryParse(cpf.Substring(i, 1), out n))
             {
-                CPFtratado += cpf.Substring(i, 1);
+                CPFaux += cpf.Substring(i, 1);
             }
 
         }
-
-        if (CPFtratado.Length != 11)
-        {
-            return 0;
-        }
-
-        for (int i = 1; i < CPFtratado.Length - 1; i++)
-        {
-            digito1 += (11 - i) * Int32.Parse(CPFtratado.Substring(i, 1));
-            digito2 += (12 - i) * Int32.Parse(CPFtratado.Substring(i, 1));
-
-        }
-
-        digito1 = digito1 % 11;
-
-        digito1 = digito1 < 2 ? 0 : 11 - digito1;
-
-        digito2 = digito2 % 11;
-
-        digito2 = digito2 < 2 ? 0 : 11 - digito2;
-
-
-        return digito2;
+        return CPFaux;
     }
 
 }
-
